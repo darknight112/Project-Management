@@ -16,4 +16,7 @@ public class GetBoardRequest {
     Long id;
     String title;
     List<Card> cardList;
+
+
+
 }

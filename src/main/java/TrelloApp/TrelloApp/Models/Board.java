@@ -17,11 +17,13 @@ public class Board extends BaseEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     Long id;
 
-    @JoinColumn(name = "card_id", referencedColumnName = "id")
+    @JoinColumn(name = "board", referencedColumnName = "id")
     @OneToMany(cascade = CascadeType.ALL)
     List<Card> cardList;
 
     String title;
+
+    List<String> columns;
 
 
 
