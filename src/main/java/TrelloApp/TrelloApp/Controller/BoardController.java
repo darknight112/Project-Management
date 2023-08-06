@@ -20,8 +20,6 @@ public class BoardController {
     BoardService boardService;
 
 //    @RequestMapping("api/boards")
-
-
     @RequestMapping(value = "api/boards", method = RequestMethod.POST) //create board
     public ResponseEntity<GetBoardResponse> createBoard (@RequestBody GetBoardRequest boardRequest) {
         Board savedBoard = saveBoard(boardRequest);
@@ -69,7 +67,7 @@ public class BoardController {
         return ResponseEntity.ok(message);
     }
 
-    @RequestMapping(value = "/api/boards/{boardId}/cards", method = RequestMethod.GET)//Get all cards by board id
+    @GetMapping(value = "api/boards/{boardId}/cards")//Get all cards by board id
     public ResponseEntity<List<Card>> getAllCardsByBoardId(@PathVariable Long boardId) {
         List<Card> cards = boardService.getAllCardsByBoardId(boardId);
 
@@ -101,6 +99,5 @@ public class BoardController {
         boardService.saveBoard(board);
             return board;
         }
-
 }
 
