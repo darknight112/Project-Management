@@ -15,11 +15,11 @@ import java.util.Date;
 import java.util.List;
 
 @RestController
+@CrossOrigin("*")
 public class BoardController {
     @Autowired
     BoardService boardService;
 
-//    @RequestMapping("api/boards")
     @RequestMapping(value = "api/boards", method = RequestMethod.POST) //create board
     public ResponseEntity<GetBoardResponse> createBoard (@RequestBody GetBoardRequest boardRequest) {
         Board savedBoard = saveBoard(boardRequest);
@@ -36,14 +36,9 @@ public class BoardController {
     }
 
     @RequestMapping(value = "api/boards", method = RequestMethod.GET) //get board
-    public List<Board> getProduct () {
+    public List<Board> getBoards () {
         return boardService.getBoard();
     }
-
-//    @RequestMapping(value = "api/boards/{boardId}", method = RequestMethod.GET) //find by id
-//    public GetBoardResponse getBoardId (@PathVariable Long boardId) {
-//        return boardService.getBoardById(boardId);
-//    }
 
     @RequestMapping(value = "api/boards/{boardId}", method = RequestMethod.PUT) //update
     public ResponseEntity<GetBoardResponse> updateBoard(@PathVariable Long boardId, @RequestBody GetBoardRequest updatedBoard) {
@@ -55,10 +50,6 @@ public class BoardController {
         }
     }
 
-//    @RequestMapping(value = "api/boards/{boardId}", method = RequestMethod.DELETE)//delete
-//    public void deleteBoard (@PathVariable Long boardId) {
-//        boardService.deleteBoardById(boardId);
-//    }
 
     @RequestMapping(value = "api/boards/{boardId}", method = RequestMethod.DELETE)//delete
     public ResponseEntity<String> deleteBoard (@PathVariable Long boardId) {
@@ -67,23 +58,15 @@ public class BoardController {
         return ResponseEntity.ok(message);
     }
 
-    @GetMapping(value = "api/boards/{boardId}/cards")//Get all cards by board id
-    public ResponseEntity<List<Card>> getAllCardsByBoardId(@PathVariable Long boardId) {
-        List<Card> cards = boardService.getAllCardsByBoardId(boardId);
-
-        cards.removeIf(card -> {
-            card.setCreatedDate(null);
-            card.setUpdatedDate(null);
-            card.setIsActive(null);
-            return true; // Always return true to remove the element
-        });
-        if (!cards.isEmpty()) {
-            return ResponseEntity.ok(cards);
-        } else {
-            return ResponseEntity.notFound().build();
+    @GetMapping("api/boards/{boardId}/cards") //get all cards by board id
+        public ResponseEntity<List<Card>> getAllCardsByBoardId(@PathVariable Long boardId) {
+            List<Card> cards = boardService.getAllCardsByBoardId(boardId);
+            if (!cards.isEmpty()) {
+                return ResponseEntity.ok(cards);
+            } else {
+                return ResponseEntity.notFound().build();
+            }
         }
-    }
-
 
         public Board saveBoard(GetBoardRequest boardRequest) {
         Board board = new Board();

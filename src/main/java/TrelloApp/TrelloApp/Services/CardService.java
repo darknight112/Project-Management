@@ -21,6 +21,10 @@ public class CardService {
     @Autowired
     private BoardRepository boardRepository;
 
+    public List<Card> getCard(){
+        return cardRepository.findAll();
+    } //get all
+
     public GetCardResponse createCard(Long boardId, GetCardRequest newCard) {
         Optional<Board> optionalBoard = boardRepository.findById(boardId);
         if (optionalBoard.isPresent()) {
