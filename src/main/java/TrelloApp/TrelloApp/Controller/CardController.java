@@ -15,12 +15,13 @@ import java.util.Date;
 import java.util.List;
 
 @RestController
+@RequestMapping(path = "api/boards")
 @CrossOrigin("*")
 public class CardController {
     @Autowired
     private CardService cardService;
 
-    @PostMapping("api/boards/{boardId}/cards")
+    @PostMapping(path = "/{boardId}/cards")
     public ResponseEntity<GetCardResponse> createCard(@PathVariable Long boardId, @RequestBody GetCardRequest newCard) {
         GetCardResponse response = cardService.createCard(boardId, newCard);
         if (response != null) {
@@ -30,17 +31,17 @@ public class CardController {
         }
     }
 
-    @GetMapping("api/boards/{boardId}/cards/{cardId}")
+    @GetMapping(path = "/{boardId}/cards/{cardId}")
     public GetCardResponse getCardById(@PathVariable Long boardId, @PathVariable Long cardId) {
         return cardService.getCardById(cardId);
     }
 
-    @RequestMapping(value = "api/boards/cards", method = RequestMethod.GET) //get all Cards
+    @GetMapping(path = "/cards") //get all Cards
     public List<Card> getCards () {
         return cardService.getCard();
     }
 
-    @PutMapping("api/boards/{boardId}/cards/{cardId}")
+    @PutMapping(path = "{boardId}/cards/{cardId}")
     public ResponseEntity<GetCardResponse> updateCard(@PathVariable Long boardId,
                                                       @PathVariable Long cardId,
                                                       @RequestBody GetCardRequest updatedCard) {
@@ -52,7 +53,7 @@ public class CardController {
         }
     }
 
-    @DeleteMapping("api/boards/{boardId}/cards/{cardId}")
+    @DeleteMapping("{boardId}/cards/{cardId}")
     public ResponseEntity<String> deleteCard (@PathVariable Long boardId, @PathVariable Long cardId) {
         cardService.deleteCard(cardId);
         String message = "Card with ID " + cardId + " has been deleted successfully from board " + boardId;

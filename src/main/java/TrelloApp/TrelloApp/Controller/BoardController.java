@@ -15,12 +15,13 @@ import java.util.Date;
 import java.util.List;
 
 @RestController
+@RequestMapping(path = "api/boards")
 @CrossOrigin("*")
 public class BoardController {
     @Autowired
     BoardService boardService;
 
-    @RequestMapping(value = "api/boards", method = RequestMethod.POST) //create board
+    @PostMapping //create board
     public ResponseEntity<GetBoardResponse> createBoard (@RequestBody GetBoardRequest boardRequest) {
         Board savedBoard = saveBoard(boardRequest);
         GetBoardResponse response = new GetBoardResponse();
@@ -35,12 +36,12 @@ public class BoardController {
         return new ResponseEntity<>(response, HttpStatus.CREATED);
     }
 
-    @RequestMapping(value = "api/boards", method = RequestMethod.GET) //get board
+    @GetMapping//get board
     public List<Board> getBoards () {
         return boardService.getBoard();
     }
 
-    @RequestMapping(value = "api/boards/{boardId}", method = RequestMethod.PUT) //update
+    @PutMapping(path = "/{boardId}") //update
     public ResponseEntity<GetBoardResponse> updateBoard(@PathVariable Long boardId, @RequestBody GetBoardRequest updatedBoard) {
         GetBoardResponse response = boardService.updateBoard(boardId, updatedBoard);
         if (response != null) {
@@ -51,14 +52,14 @@ public class BoardController {
     }
 
 
-    @RequestMapping(value = "api/boards/{boardId}", method = RequestMethod.DELETE)//delete
+    @DeleteMapping(path = "{boardId}")//delete
     public ResponseEntity<String> deleteBoard (@PathVariable Long boardId) {
         boardService.deleteBoardById(boardId);
         String message = "Board with ID " + boardId + " has been deleted successfully.";
         return ResponseEntity.ok(message);
     }
 
-    @GetMapping("api/boards/{boardId}/cards") //get all cards by board id
+    @GetMapping(path = "/{boardId}/cards") //get all cards by board id
         public ResponseEntity<List<Card>> getAllCardsByBoardId(@PathVariable Long boardId) {
             List<Card> cards = boardService.getAllCardsByBoardId(boardId);
             if (!cards.isEmpty()) {

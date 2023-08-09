@@ -10,10 +10,23 @@
 <body>
 
     <script>
+        var requestOptions = {
+            method: 'GET',
+            redirect: 'follow'
+          };
+
+          fetch("http://localhost:8080/api/boards", requestOptions)
+            .then(response => response.text())
+            .then(result => console.log(result))
+            .catch(error => console.log('error', error));
+    </script>
+
+    <script>
         // First, perform a GET request to check if a board already exists
         fetch("http://localhost:8080/api/boards", { method: 'GET' })
             .then(response => response.json())
             .then(boards => {
+                document.getElementById('board-title').textContent = boards[0].title;
                 if (boards.length === 0) {
                     // If no boards exist, create a new board using a POST request
                     const createBoardOptions = {
