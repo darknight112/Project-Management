@@ -9,12 +9,26 @@
 
 <body>
 
+<!--    <script>-->
+<!--        var requestOptions = {-->
+<!--            method: 'GET',-->
+<!--            redirect: 'follow'-->
+<!--          };-->
+
+<!--          fetch("http://localhost:8080/api/boards", requestOptions)-->
+<!--            .then(response => response.text())-->
+<!--            .then(result => console.log(result))-->
+<!--            .catch(error => console.log('error', error));-->
+<!--    </script>-->
+<!--    </script>-->
+
     <script>
         // First, perform a GET request to check if a board already exists
         fetch("http://localhost:8080/api/boards", { method: 'GET' })
             .then(response => response.json())
             .then(boards => {
-                if (boards.length === 0) {
+
+                if (boards.length == 0) {
                     // If no boards exist, create a new board using a POST request
                     const createBoardOptions = {
                         method: 'POST',
@@ -24,12 +38,20 @@
                         body: JSON.stringify({ "title": "newBoard" }),
                         redirect: 'follow'
                     };
-
                     fetch("http://localhost:8080/api/boards", createBoardOptions)
                         .then(response => response.json())
                         .then(createdBoard => console.log("Created board:", createdBoard))
                         .catch(error => console.log('Error creating board:', error));
+                    fetch("http://localhost:8080/api/boards", { method: 'GET' })
+                        .then(response => response.json())
+                        .then(board2 => {
+                            document.getElementById("board-title").textContent = boards2[0].title;
+                        })
+                        .catch(error => console.log('Error getting board:', error));
+                    document.getElementById('board-title').textContent = boards[0].title;
+
                 } else {
+                    document.getElementById("board-title").textContent = boards[0].title;
                     console.log("Board already exists:", boards[0]); // Assuming you only want to work with the first board
                 }
             })

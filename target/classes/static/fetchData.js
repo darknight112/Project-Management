@@ -1,5 +1,5 @@
 let hostname = window.location.hostname;
-let port = 9091;
+let port = 8080;
 let url = "http://" + hostname + ":" + port + "/api/boards/cards"
 
 fetch(url)
@@ -176,6 +176,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
 async function updateBoardTitle() {
     const newBoardTitle = document.getElementById('new-board-title').value;
+    document.getElementById('board-title').textContent = newBoardTitle;
 
     if (!newBoardTitle) {
         alert('Please enter a new board title.');
